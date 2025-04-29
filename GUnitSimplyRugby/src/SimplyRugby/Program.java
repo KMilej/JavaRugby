@@ -1,10 +1,11 @@
 package SimplyRugby;
 
+import ui.LoginScreen;
+
 public class Program {
-	
-	
-	public void hello() {
-		System.out.println("HEllo");
+		
+	public void start() {
+		new LoginScreen().show();
 	}
 	
 }
