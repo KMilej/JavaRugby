@@ -21,6 +21,7 @@ public class MainPage extends JFrame {
         
         LoginPanel loginPanel = new LoginPanel();
         setContentPane(loginPanel);
+        getRootPane().setDefaultButton(loginPanel.getLoginButton());
         
         
         setVisible(true); // Pokazuje okno

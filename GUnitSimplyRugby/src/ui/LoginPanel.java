@@ -1,6 +1,9 @@
 package ui;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 
 import javax.swing.JButton;
@@ -9,9 +12,17 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import managers.CoachManager;
+import models.Coach;
+import services.LoginValidation;
+
 public class LoginPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	
+	private JTextField usernametxt;
+	private JPasswordField passwordtxt;
+	private JButton btnLogin;
 
 	/* CONSTRUCTOR */
 
@@ -38,21 +49,55 @@ public class LoginPanel extends JPanel {
 		txtPassword.setBounds(401, 228, 150, 25);
 		add(txtPassword);
 
-		JButton btnLogin = new JButton("Login");
+		btnLogin = new JButton("Login");
 		btnLogin.setBounds(330, 296, 221, 60);
 		add(btnLogin);
 
 		JLabel titleLabel = new JLabel("Welcome to SimplyRugby");
+		
+		
 
-		// Ustawienia wyglądu
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String username = txtUsername.getText();
+				String password = new String(txtPassword.getPassword());
 
+				// validate if empty
+				if (username.isEmpty() || password.isEmpty()) {
+					JOptionPane.showMessageDialog(LoginPanel.this, "Provide a login and password");
+					return;
+				}
 
+				CoachManager coachManager = new CoachManager();
+				LoginValidation coachValidate = new LoginValidation(coachManager);
+				
+				Coach coach = coachValidate.authenticate(username, password);
+				
+//				// test
+//				CoachManager coachManager = new CoachManager(); 
+//				Coach coach = coachManager.authenticate(username, password);
+
+				if (coach != null) {
+					JOptionPane.showMessageDialog(LoginPanel.this, "Welcome, " + coach.getFirstName() + "!");
+					// tu kolejna strona
+				} else {
+					JOptionPane.showMessageDialog(LoginPanel.this, "Wrong login or hasło.");
+				}
+			}
+		});
+		
+		// how main big name will look like
 		titleLabel.setFont(new Font("Arial", Font.BOLD, 36)); // Nazwa czcionki, styl, rozmiar
 		titleLabel.setForeground(Color.BLUE); // Kolor tekstu (opcjonalnie)
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER); // Wyśrodkowanie (w poziomie)
 		titleLabel.setBounds(157, 78, 600, 50); // Pozycja i rozmiar
 
 		add(titleLabel); // Dodanie etykiety do panelu lub okna
+		
+			
+	}
+	public JButton getLoginButton() {
+	    return btnLogin;
 	}
 
 }
