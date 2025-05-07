@@ -40,34 +40,34 @@ public class LoginPanel extends JPanel {
 			icon = new ImageIcon(getClass().getResource("/img/Rugby SImply LOGO.jpg"));
 		}
 
-		Image scaledImage = icon.getImage().getScaledInstance(300, 100, Image.SCALE_SMOOTH);
+		Image scaledImage = icon.getImage().getScaledInstance(400, 400, Image.SCALE_SMOOTH);
 		ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
 		JLabel logoLabel = new JLabel(scaledIcon);
-		logoLabel.setBounds(561, 139, 500, 200);
+		logoLabel.setBounds(455, 104, 400, 400);
 		add(logoLabel);
 
 		setBackground(new Color(192, 192, 192));
 		setOpaque(true);
 
 		JLabel lblUsername = new JLabel("Username:");
-		lblUsername.setBounds(302, 177, 100, 25);
+		lblUsername.setBounds(169, 139, 100, 25);
 		add(lblUsername);
 
 		JTextField txtUsername = new JTextField();
-		txtUsername.setBounds(401, 177, 150, 25);
+		txtUsername.setBounds(269, 139, 150, 25);
 		add(txtUsername);
 
 		JLabel lblPassword = new JLabel("Password:");
-		lblPassword.setBounds(302, 228, 100, 25);
+		lblPassword.setBounds(169, 188, 100, 25);
 		add(lblPassword);
 
 		JPasswordField txtPassword = new JPasswordField();
-		txtPassword.setBounds(401, 228, 150, 25);
+		txtPassword.setBounds(269, 188, 150, 25);
 		add(txtPassword);
 
 		btnLogin = new JButton("Login");
-		btnLogin.setBounds(330, 296, 221, 60);
+		btnLogin.setBounds(198, 242, 221, 60);
 		add(btnLogin);
 
 		btnLogin.addActionListener(new ActionListener() {
@@ -109,7 +109,7 @@ public class LoginPanel extends JPanel {
 		titleLabel.setFont(new Font("Arial", Font.BOLD, 36)); // Nazwa czcionki, styl, rozmiar
 		titleLabel.setForeground(Color.BLUE); // Kolor tekstu (opcjonalnie)
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER); // Wyśrodkowanie (w poziomie)
-		titleLabel.setBounds(157, 78, 600, 50); // Pozycja i rozmiar
+		titleLabel.setBounds(169, 43, 600, 50); // Pozycja i rozmiar
 
 		add(titleLabel); // Dodanie etykiety do panelu lub okna
 

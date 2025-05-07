@@ -14,6 +14,7 @@ public class CoachMenuScreen extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private CoachManager coachManager;
 	private TeamManager teamManager;
+	private JButton btnMyTeams;
 
 	public CoachMenuScreen(CoachManager coachManager, TeamManager teamManager) {
 		this.coachManager = coachManager;
@@ -32,9 +33,13 @@ public class CoachMenuScreen extends JPanel {
 			}
 		});
 
-		JButton btnMyTeams = new JButton("My Teams");
+		btnMyTeams = new JButton("My Teams");
 		btnMyTeams.setBounds(40, 157, 150, 45);
 		add(btnMyTeams);
+
+		btnMyTeams.addActionListener(e -> {
+		    new MyTeam(); // to tworzy nowe okno — NIE dodajesz go do obecnego okna!
+		});
 
 		JButton btnSettings = new JButton("Settings");
 		btnSettings.setBounds(40, 269, 150, 45);
@@ -94,6 +99,10 @@ public class CoachMenuScreen extends JPanel {
 		scrollPane.setPreferredSize(new java.awt.Dimension(400, 250));
 
 		JOptionPane.showMessageDialog(this, scrollPane, "All Teams in Club", JOptionPane.PLAIN_MESSAGE);
+	}
+
+	public JButton getMyTeamsButton() {
+		return btnMyTeams;
 	}
 
 }
