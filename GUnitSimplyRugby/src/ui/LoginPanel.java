@@ -95,7 +95,7 @@ public class LoginPanel extends JPanel {
 
 					SwingUtilities.getWindowAncestor(LoginPanel.this).dispose();
 
-					new CoachMenu();
+					new CoachMenu(coach);
 
 				} else {
 					JOptionPane.showMessageDialog(LoginPanel.this, "Wrong login or hasło.");

@@ -1,6 +1,9 @@
 package ui;
 
 import javax.swing.*;
+
+
+import java.awt.Font;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,16 +18,18 @@ public class CoachMenuScreen extends JPanel {
 	private CoachManager coachManager;
 	private TeamManager teamManager;
 	private JButton btnMyTeams;
+	private Coach loggedCoach;
 
-	public CoachMenuScreen(CoachManager coachManager, TeamManager teamManager) {
+	public CoachMenuScreen(CoachManager coachManager, TeamManager teamManager, Coach loggedCoach) {
 		this.coachManager = coachManager;
 		this.teamManager = teamManager;
+		this.loggedCoach = loggedCoach;
 
 		setLayout(null);
 		setSize(1000, 750);
 
 		JButton btnTeamsInClub = new JButton("Teams in Club");
-		btnTeamsInClub.setBounds(40, 101, 150, 45);
+		btnTeamsInClub.setBounds(270, 115, 150, 45);
 		add(btnTeamsInClub);
 
 		btnTeamsInClub.addActionListener(new ActionListener() {
@@ -34,23 +39,25 @@ public class CoachMenuScreen extends JPanel {
 		});
 
 		btnMyTeams = new JButton("My Teams");
-		btnMyTeams.setBounds(40, 157, 150, 45);
+		btnMyTeams.setBounds(270, 214, 150, 45);
 		add(btnMyTeams);
 
 		btnMyTeams.addActionListener(e -> {
-		    new MyTeam(); // to tworzy nowe okno — NIE dodajesz go do obecnego okna!
+			JFrame currentWindow = (JFrame) SwingUtilities.getWindowAncestor(this); // znajdź bieżące okno
+			currentWindow.dispose(); // zamknij je
+			new MyTeam(loggedCoach); // otwórz nowe
 		});
 
 		JButton btnSettings = new JButton("Settings");
-		btnSettings.setBounds(40, 269, 150, 45);
+		btnSettings.setBounds(487, 214, 150, 45);
 		add(btnSettings);
 
 		JButton btnActiveCoaches = new JButton("Active Coaches");
-		btnActiveCoaches.setBounds(40, 213, 150, 45);
+		btnActiveCoaches.setBounds(487, 115, 150, 45);
 		add(btnActiveCoaches);
 
 		JButton btnExit = new JButton("Exit");
-		btnExit.setBounds(40, 328, 150, 45);
+		btnExit.setBounds(375, 321, 150, 45);
 		add(btnExit);
 
 		btnActiveCoaches.addActionListener(new ActionListener() {
@@ -58,6 +65,11 @@ public class CoachMenuScreen extends JPanel {
 				showCoachList();
 			}
 		});
+
+		JLabel title = new JLabel("Welcome in SR Menu: " + loggedCoach.getFirstName());
+		title.setFont(new Font("Arial", Font.BOLD, 20));
+		title.setBounds(308, 29, 600, 40); // ustaw pozycję i szerokość
+		add(title);
 
 		btnExit.addActionListener(e -> System.exit(0));
 	}

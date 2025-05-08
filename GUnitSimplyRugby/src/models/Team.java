@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Team {
@@ -14,21 +15,22 @@ public class Team {
 		this.name = name;
 		this.players = new ArrayList<>();
 	}
-	
+
 	public String getId() {
 		return id;
 	}
+
 	public String getName() {
-	    return name;
+		return name;
 	}
 
-	
+	public List<Player> getPlayers() {
+		return players;
+	}
+
 	@Override
 	public String toString() {
-	    return name + " (ID: " + id + ")";
+		return name + " (ID: " + id + ")";
 	}
-	
-	
-
 
 }

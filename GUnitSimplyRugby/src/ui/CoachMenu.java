@@ -5,12 +5,13 @@ import javax.swing.JFrame;
 
 import managers.CoachManager;
 import managers.TeamManager;
+import models.Coach;
 
 public class CoachMenu extends JFrame {
 
     private static final long serialVersionUID = 1l;
 
-    public CoachMenu() {
+    public CoachMenu(Coach loggedCoach) {
         super("Coach Menu");
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -23,8 +24,7 @@ public class CoachMenu extends JFrame {
         TeamManager teamManager = new TeamManager();
 
         // ✅ Przekazujemy oba do ekranu
-        CoachMenuScreen coachScreen = new CoachMenuScreen(coachManager, teamManager);
-
+        CoachMenuScreen coachScreen = new CoachMenuScreen(coachManager, teamManager, loggedCoach);
         setContentPane(coachScreen);
         setVisible(true);
     }
