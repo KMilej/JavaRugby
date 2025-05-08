@@ -1,5 +1,8 @@
 package models;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class Player {
 
 	/* PROPERTIES */
@@ -15,10 +18,12 @@ public class Player {
 	private String doctor;
 	private String doctorPhoneNumber;
 
+	Map<String, Integer> skills = new LinkedHashMap<>();
+
 	/* METHODS */
 
-	public Player(String name, String surname, String fieldPosition, String address, String postcode, int sruNumber, String dateOfBirth,
-			int phoneNumber, String email) {
+	public Player(String name, String surname, String fieldPosition, String address, String postcode, int sruNumber,
+			String dateOfBirth, int phoneNumber, String email) {
 		this.name = name;
 		this.surname = surname;
 		this.fieldPosition = fieldPosition;
@@ -28,10 +33,11 @@ public class Player {
 		this.dateOfBirth = dateOfBirth;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
+		initializeSkills();
 	}
 
-	public Player(String name, String surname, String fieldPosition, String address, String postcode, int sruNumber, String dateOfBirth,
-			int phoneNumber, String email, String doctor, String doctorPhoneNumber) {
+	public Player(String name, String surname, String fieldPosition, String address, String postcode, int sruNumber,
+			String dateOfBirth, int phoneNumber, String email, String doctor, String doctorPhoneNumber) {
 		this.name = name;
 		this.surname = surname;
 		this.fieldPosition = fieldPosition;
@@ -43,6 +49,7 @@ public class Player {
 		this.email = email;
 		this.doctor = doctor;
 		this.doctorPhoneNumber = doctorPhoneNumber;
+	    initializeSkills();
 	}
 
 	public String getDoctorPhoneNumber() {
@@ -124,12 +131,34 @@ public class Player {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
-	
+
+	public Map<String, Integer> getSkills() {
+		return skills;
+	}
+
+	public void setSkillLevel(String skill, int level) {
+		if (skills.containsKey(skill) && level >= 1 && level <= 5) {
+			skills.put(skill, level);
+		}
+	}
+
 	@Override
 	public String toString() {
-	    return name + " " + surname + " - " + fieldPosition;
+		return name + " " + surname + " - " + fieldPosition;
+	}
+	
+	private void initializeSkills() {
+	    skills.put("Standard", 1);
+	    skills.put("Spin", 1);
+	    skills.put("Pop", 1);
+	    skills.put("Front", 1);
+	    skills.put("Rear", 1);
+	    skills.put("Side", 1);
+	    skills.put("Scrabble", 1);
+	    skills.put("Drop", 1);
+	    skills.put("Punt", 1);
+	    skills.put("Grubber", 1);
+	    skills.put("Goal", 1);
 	}
 
 
