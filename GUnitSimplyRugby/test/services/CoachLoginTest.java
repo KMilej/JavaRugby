@@ -16,10 +16,10 @@ class CoachLoginTest {
 		CoachManager manager = new CoachManager();
 		LoginValidation validator = new LoginValidation(manager);
 
-		Coach coach = validator.authenticate("Kamil", "codingishard");
+		Coach coach = validator.authenticate("kmilej", "codingishard");
 
 		assertNotNull(coach);
-		assertEquals("Kamil", coach.getUsername());
+		assertEquals("kmilej", coach.getUsername());
 	}
 
 	@Test
@@ -31,7 +31,8 @@ class CoachLoginTest {
 
         assertNull(coach);
 	}
-
+	
+	@Test
 	void testUnknownUsername() {
 		CoachManager manager = new CoachManager();
 		LoginValidation validator = new LoginValidation(manager);

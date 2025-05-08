@@ -129,19 +129,8 @@ public class Player {
 	
 	@Override
 	public String toString() {
-	    return "Player{" +
-	            "name='" + name + '\'' +
-	            ", surname='" + surname + '\'' +
-	            ", address='" + address + '\'' +
-	            ", Position='" + fieldPosition + '\'' +
-	            ", postcode='" + postcode + '\'' +
-	            ", sruNumber=" + sruNumber +
-	            ", dateOfBirth='" + dateOfBirth + '\'' +
-	            ", phoneNumber=" + phoneNumber +
-	            ", email='" + email + '\'' +
-	            ", doctor='" + doctor + '\'' +
-	            ", doctorPhoneNumber='" + doctorPhoneNumber + '\'' +
-	            '}';
+	    return name + " " + surname + " - " + fieldPosition;
 	}
+
 
 }

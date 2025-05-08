@@ -1,5 +1,6 @@
 package ui;
-
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +12,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import models.Coach;
+import models.Player;
+import models.Team;
+
+import javax.swing.JList;
 
 public class PlayerSquadScreen extends JPanel {
 
@@ -42,7 +47,20 @@ public class PlayerSquadScreen extends JPanel {
 			}
 		});
 		add(btngetback);
+		
+		JList<Player> playerList = new JList();
+		DefaultListModel<Player> playerListModel = new DefaultListModel<>();
+		
+		for (Team team : coach.getTeams()) {
+			for (Player player : team.getPlayers()) {
+				playerListModel.addElement(player);
+			}
+		}
+		
+		playerList.setModel(playerListModel);
+		playerList.setBounds(28, 132, 134, 481);
+		add(playerList);
+		
+		
 	}
-	
-
 }

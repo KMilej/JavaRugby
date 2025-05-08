@@ -8,8 +8,8 @@ public class Program {
 
     public void start() {
        new MainPage();
-       CoachManager myCoatch = new CoachManager();
-       myCoatch.printAllCoaches();
+//       CoachManager myCoatch = new CoachManager();
+//       myCoatch.printAllCoaches();
 
     }
 }

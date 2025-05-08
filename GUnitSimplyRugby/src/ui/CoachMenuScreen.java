@@ -68,7 +68,7 @@ public class CoachMenuScreen extends JPanel {
 
 		JLabel title = new JLabel("Welcome in SR Menu: " + loggedCoach.getFirstName());
 		title.setFont(new Font("Arial", Font.BOLD, 20));
-		title.setBounds(308, 29, 600, 40); // ustaw pozycję i szerokość
+		title.setBounds(308, 29, 600, 40); 
 		add(title);
 
 		btnExit.addActionListener(e -> System.exit(0));

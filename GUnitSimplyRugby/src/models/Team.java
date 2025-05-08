@@ -27,6 +27,10 @@ public class Team {
 	public List<Player> getPlayers() {
 		return players;
 	}
+	
+	public void addPlayer(Player player) {
+		players.add(player);
+	}
 
 	@Override
 	public String toString() {
