@@ -1,64 +1,71 @@
+/*
+ * H48W35 Graded Unit 2 – Fife College
+ * Author: Kamil Milej | Date: 13.05.2025
+ * File: MyTeamScreen.java
+ * Description:
+ * JPanel that displays teams assigned to the logged-in coach.
+ * Allows navigation back to the coach menu or to the player squad view.
+ */
+
 package ui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
-import models.Coach;
-import models.Team;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
+import models.Coach;
+import models.Team;
+
+/**
+ * UI panel showing the list of teams assigned to the coach.
+ */
 public class MyTeamScreen extends JPanel {
-	
-	
-	private Coach loggedCoach;
-	
 
-	public MyTeamScreen(Coach coach, Coach loggedCoach) {
-		
-		this.loggedCoach = loggedCoach;
-		
-		setLayout(null);
-		setSize(1000, 750);
+    private static final long serialVersionUID = 1L;
 
-		JLabel title = new JLabel("Teams assigned to you : " + coach.getFirstName());
-		title.setFont(new Font("Arial", Font.BOLD, 20));
-		title.setBounds(300, 20, 400, 30); // x, y, szer, wys
-		add(title);
+    /**
+     * Constructs the screen displaying coach-assigned teams.
+     *
+     * @param coach       the coach whose teams are displayed
+     * @param loggedCoach the currently logged-in coach
+     */
+    public MyTeamScreen(Coach coach, Coach loggedCoach) {
+        setLayout(null);
+        setSize(1000, 750);
 
-		JButton btngetback = new JButton("Back to menu");
-		btngetback.setBounds(28, 18, 150, 40);
-		btngetback.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// znajdź okno, w którym znajduje się ten panel
-				JFrame parentWindow = (JFrame) SwingUtilities.getWindowAncestor(MyTeamScreen.this);
-				parentWindow.dispose(); // zamknij bieżące okno
+        JLabel title = new JLabel("Teams assigned to you: " + coach.getFirstName());
+        title.setFont(new Font("Arial", Font.BOLD, 20));
+        title.setBounds(300, 20, 400, 30);
+        add(title);
 
-				new CoachMenu(coach); // otwórz menu główne ponownie dla tego samego trenera
-			}
-		});
-		add(btngetback);
+        JButton btnBack = new JButton("Back to menu");
+        btnBack.setBounds(28, 18, 150, 40);
+        btnBack.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JFrame parentWindow = (JFrame) SwingUtilities.getWindowAncestor(MyTeamScreen.this);
+                parentWindow.dispose();
+                new CoachMenu(coach);
+            }
+        });
+        add(btnBack);
 
-		List<Team> teams = coach.getTeams();
+        List<Team> teams = coach.getTeams();
+        int y = 140;
 
-		int y = 140; // Startowy Y dla przycisków drużyn
-		for (Team team : teams) {
-			JButton teamButton = new JButton(team.toString());
-			teamButton.setBounds(350, y, 300, 40); // x, y, szer, wys
+        for (Team team : teams) {
+            JButton teamButton = new JButton(team.toString());
+            teamButton.setBounds(350, y, 300, 40);
 
-			teamButton.addActionListener(e -> {
-				JOptionPane.showMessageDialog(this, "You selected: " + team);
+            teamButton.addActionListener(e -> {
+                JFrame currentWindow = (JFrame) SwingUtilities.getWindowAncestor(this);
+                currentWindow.dispose();
+                new PlayerSquad(loggedCoach);
+            });
 
-			});
-
-			add(teamButton);
-			y += 60; // odstęp między przyciskami
-			
-			teamButton.addActionListener(e -> {
-				JFrame currentWindow = (JFrame) SwingUtilities.getWindowAncestor(this); // znajdź bieżące okno
-				currentWindow.dispose(); // zamknij je
-				new PlayerSquad(loggedCoach); // otwórz nowe
-			});
-		}
-	}
+            add(teamButton);
+            y += 60;
+        }
+    }
 }

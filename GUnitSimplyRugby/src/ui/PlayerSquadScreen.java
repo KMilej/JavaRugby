@@ -1,26 +1,16 @@
+/*
+ * H48W35 Graded Unit 2 – Fife College
+ * Author: Kamil Milej | Date: 13.05.2025
+ * File: PlayerSquadScreen.java
+ * Description:
+ * JPanel that displays a list of players and their skills for a coach's team.
+ * Allows editing skill levels, saving to file, and returning to the menu.
+ */
+
 package ui;
 
-import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Map;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.SwingUtilities;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.table.DefaultTableModel;
 
 import managers.SimpleTeamFileManager;
@@ -28,58 +18,73 @@ import models.Coach;
 import models.Player;
 import models.Team;
 
-import javax.swing.JList;
+import java.awt.*;
+import java.util.Map;
 
+/**
+ * UI panel for displaying and editing a coach's team and player skills.
+ */
 public class PlayerSquadScreen extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTable skillsTable;
 	private DefaultTableModel skillsTableModel;
+	private JTextField txtPassing;
+	private JTextField txtTrackling;
+	private JTextField txtKicking;
+	private JList<Player> playerList;
+	private DefaultListModel<Player> playerListModel;
 
+	/**
+	 * Constructs the player squad screen for the coach.
+	 *
+	 * @param coach       the coach whose team is shown
+	 * @param loggedCoach the logged-in coach
+	 */
 	public PlayerSquadScreen(Coach coach, Coach loggedCoach) {
 		setLayout(null);
 		setSize(1000, 750);
 
-		JLabel title = new JLabel("Welcome in SR Menu: " + loggedCoach.getFirstName());
+		JLabel title = new JLabel("Welcome to Simply Rugby, " + loggedCoach.getFirstName());
 		title.setFont(new Font("Arial", Font.BOLD, 20));
-		title.setBounds(308, 29, 600, 40); // ustaw pozycję i szerokość
+		title.setBounds(308, 29, 600, 40);
 		add(title);
 
-		JLabel teamName = new JLabel(" Team menu: " + coach.getTeams());
+		JLabel teamName = new JLabel("Your teams: " + coach.getTeams());
 		teamName.setFont(new Font("Arial", Font.BOLD, 20));
-		teamName.setBounds(28, 81, 600, 40); // ustaw pozycję i szerokość
+		teamName.setBounds(28, 81, 600, 40);
 		add(teamName);
 
-		JButton btngetback = new JButton("Back to menu");
-		btngetback.setBounds(28, 18, 150, 40);
-		btngetback.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// znajdź okno, w którym znajduje się ten panel
-				JFrame parentWindow = (JFrame) SwingUtilities.getWindowAncestor(PlayerSquadScreen.this);
-				parentWindow.dispose(); // zamknij bieżące okno
-
-				new CoachMenu(coach); // otwórz menu główne ponownie dla tego samego trenera
-			}
+		JButton btnBack = new JButton("Back to menu");
+		btnBack.setBounds(28, 18, 150, 40);
+		btnBack.addActionListener(e -> {
+			JFrame parentWindow = (JFrame) SwingUtilities.getWindowAncestor(this);
+			parentWindow.dispose();
+			new CoachMenu(coach);
 		});
-		add(btngetback);
+		add(btnBack);
 
-		JList<Player> playerList = new JList();
-		DefaultListModel<Player> playerListModel = new DefaultListModel<>();
+		playerList = new JList<>();
+		playerListModel = new DefaultListModel<>();
 
 		for (Team team : coach.getTeams()) {
 			for (Player player : team.getPlayers()) {
-				SimpleTeamFileManager.loadSkills(player); // ⬅️ dodaj to tutaj
+				SimpleTeamFileManager.loadSkills(player);
 				playerListModel.addElement(player);
 			}
 		}
 
 		playerList.setModel(playerListModel);
+		playerList.setBounds(28, 132, 134, 481);
+		add(playerList);
 
 		String[] columnNames = { "Skill", "Level" };
 		skillsTableModel = new DefaultTableModel(columnNames, 0) {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public boolean isCellEditable(int row, int column) {
-				return column == 1; // tylko poziomy edytowalne
+				return column == 1;
 			}
 
 			@Override
@@ -89,101 +94,91 @@ public class PlayerSquadScreen extends JPanel {
 		};
 
 		skillsTable = new JTable(skillsTableModel);
-
 		Integer[] allowedLevels = { 1, 2, 3, 4, 5 };
 		JComboBox<Integer> levelComboBox = new JComboBox<>(allowedLevels);
 		skillsTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(levelComboBox));
+
 		JScrollPane scrollPane = new JScrollPane(skillsTable);
-		scrollPane.setBounds(250, 132, 300, 300); // obok listy zawodników
+		scrollPane.setBounds(250, 132, 300, 300);
 		add(scrollPane);
 
-		// Dodaj nasłuchiwacz, który reaguje na wybór gracza
-		playerList.addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				if (!e.getValueIsAdjusting()) {
+		skillsTableModel.addTableModelListener(e -> {
+			if (e.getType() == TableModelEvent.UPDATE) {
+				int row = e.getFirstRow();
+				if (row >= 0 && row < skillsTableModel.getRowCount()) {
+					String skill = (String) skillsTableModel.getValueAt(row, 0);
+					Integer level = (Integer) skillsTableModel.getValueAt(row, 1);
 					Player selectedPlayer = playerList.getSelectedValue();
-					if (selectedPlayer != null) {
-						updateSkillsTable(selectedPlayer);
+					if (selectedPlayer != null && level != null && level >= 1 && level <= 5) {
+						selectedPlayer.setSkillLevel(skill, level);
 					}
 				}
 			}
 		});
 
-		JButton saveButton = new JButton("Zapisz skille");
+		playerList.addListSelectionListener(e -> {
+			if (!e.getValueIsAdjusting()) {
+				Player selectedPlayer = playerList.getSelectedValue();
+				if (selectedPlayer != null) {
+					updateSkillsTable(selectedPlayer);
+				}
+			}
+		});
+
+		JButton saveButton = new JButton("Save Skills");
 		saveButton.setBounds(600, 132, 150, 40);
 		saveButton.addActionListener(e -> {
 			Player selectedPlayer = playerList.getSelectedValue();
 			if (selectedPlayer != null) {
 				SimpleTeamFileManager.saveSkills(selectedPlayer);
-				JOptionPane.showMessageDialog(null, "Skille zapisane do pliku");
+				JOptionPane.showMessageDialog(null, "Skills saved to file.");
 			}
 		});
 		add(saveButton);
 
-		playerList.setBounds(28, 132, 134, 481);
-		add(playerList);
+		JButton btnExit = new JButton("Exit");
+		btnExit.setBounds(600, 386, 150, 40);
+		btnExit.addActionListener(e -> {
+			int result = JOptionPane.showConfirmDialog(null, "Do you want to save all skills before exiting?",
+					"Exit Confirmation", JOptionPane.YES_NO_OPTION);
 
+			if (result == JOptionPane.YES_OPTION) {
+				for (int i = 0; i < playerListModel.getSize(); i++) {
+					Player player = playerListModel.getElementAt(i);
+					SimpleTeamFileManager.saveSkills(player);
+				}
+				JOptionPane.showMessageDialog(null, "All skills have been saved.");
+			}
+
+			System.exit(0);
+		});
+		add(btnExit);
+
+		txtPassing = new JTextField("   PASSING");
+		txtPassing.setEditable(false);
+		txtPassing.setBounds(175, 161, 65, 51);
+		add(txtPassing);
+
+		txtTrackling = new JTextField("  TACKLING");
+		txtTrackling.setEditable(false);
+		txtTrackling.setBounds(175, 223, 65, 51);
+		add(txtTrackling);
+
+		txtKicking = new JTextField("   KICKING");
+		txtKicking.setEditable(false);
+		txtKicking.setBounds(175, 285, 65, 51);
+		add(txtKicking);
 	}
 
+	/**
+	 * Updates the skill table with data from the selected player.
+	 *
+	 * @param player the selected Player object
+	 */
 	private void updateSkillsTable(Player player) {
-		skillsTableModel.setRowCount(0); // wyczyść starą zawartość
-
+		skillsTableModel.setRowCount(0);
 		for (Map.Entry<String, Integer> entry : player.getSkills().entrySet()) {
 			skillsTableModel.addRow(new Object[] { entry.getKey(), entry.getValue() });
 		}
-
-		// automatyczna aktualizacja danych gracza po edycji (bez zapisu!)
-		skillsTable.getModel().addTableModelListener(e -> {
-			int row = e.getFirstRow();
-			if (row >= 0 && row < skillsTableModel.getRowCount()) {
-				String skill = (String) skillsTableModel.getValueAt(row, 0);
-				Integer level = (Integer) skillsTableModel.getValueAt(row, 1);
-				if (level != null && level >= 1 && level <= 5) {
-					player.setSkillLevel(skill, level);
-					// ❌ usuń zapis tutaj!
-				}
-			}
-		});
 	}
-
-//	private void showPlayerInfoDialog(Player player) {
-//		JDialog dialog = new JDialog();
-//		dialog.setTitle("Player Info");
-//		dialog.setSize(300, 200);
-//		dialog.setLocationRelativeTo(null);
-//		dialog.setModal(true);
-//		dialog.setLayout(null);
-//
-//		JLabel nameLabel = new JLabel("Name: " + player.getSurname());
-//		nameLabel.setBounds(20, 20, 250, 20);
-//		dialog.add(nameLabel);
-//
-//		JLabel addressLabel = new JLabel("Address: " + player.getAddress());
-//		addressLabel.setBounds(20, 80, 250, 20);
-//		dialog.add(addressLabel);
-//
-//		dialog.setVisible(true);
-//	}
-
-//	private void showSkillsDialog(Player player) {
-//		Map<String, Integer> skills = player.getSkills();
-//		String[] columnNames = {"Skill", "Level"};
-//		Object[][] data = new Object[skills.size()][2];
-//
-//		int i = 0;
-//		for (Map.Entry<String, Integer> entry : skills.entrySet()) {
-//			data[i][0] = entry.getKey();
-//			data[i][1] = entry.getValue();
-//			i++;
-//		}
-//
-//		JTable table = new JTable(data, columnNames);
-//		table.setEnabled(false); // tylko do odczytu
-//		JScrollPane scrollPane = new JScrollPane(table);
-//		scrollPane.setPreferredSize(new java.awt.Dimension(300, 200));
-//
-//		JOptionPane.showMessageDialog(null, scrollPane, player.getName() + " " + player.getSurname() + " - Skills", JOptionPane.PLAIN_MESSAGE);
-//	}
-
 }

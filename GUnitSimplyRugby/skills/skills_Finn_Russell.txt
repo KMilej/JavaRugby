@@ -1,1 +1,1 @@
-Standard=3,Spin=2,Pop=4,Front=3,Rear=2,Side=3,Scrabble=3,Drop=2,Punt=3,Grubber=3,Goal=3
+Standard=5,Spin=4,Pop=3,Front=2,Rear=1,Side=1,Scrabble=1,Drop=2,Punt=4,Grubber=3,Goal=1

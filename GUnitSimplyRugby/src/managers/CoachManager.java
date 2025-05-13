@@ -1,3 +1,12 @@
+/*
+ * H48W35 Graded Unit 2 – Fife College
+ * Author: Kamil Milej | Date: 13.05.2025
+ * File: CoachManager.java
+ * Description:
+ * Manages a list of Coach objects: creates sample data, retrieves, and displays coaches.
+ * Used in sports team management logic.
+ */
+
 package managers;
 
 import models.Coach;
@@ -6,15 +15,29 @@ import models.Team;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages Coach objects including sample data creation, retrieval, and display.
+ */
 public class CoachManager {
 
+	/* PROPERTIES */
 	private List<Coach> coaches = new ArrayList<>();
 
+	/* METHODS */
+
+	/**
+	 * Constructor that initialises the list with sample coaches using sample teams.
+	 */
 	public CoachManager() {
-		TeamManager teamManager = new TeamManager(); // lokalnie tworzysz listę drużyn
+		TeamManager teamManager = new TeamManager(); // Get sample teams
 		populateSampleCoaches(teamManager.getAllTeams());
 	}
 
+	/**
+	 * Populates the coach list with sample data linked to the provided teams.
+	 *
+	 * @param teams list of Team objects to assign to each coach
+	 */
 	private void populateSampleCoaches(List<Team> teams) {
 		if (teams.size() >= 3) {
 			coaches.add(new Coach("kmilej", "codingishard", "Kamil", "Milej", List.of(teams.get(0))));
@@ -23,30 +46,13 @@ public class CoachManager {
 		}
 	}
 
-//	public Coach authenticate(String username, String password) {
-//        for (Coach coach : coaches) {
-//            if (coach.getUsername().equalsIgnoreCase(username) && coach.getPassword().equals(password)) {
-//                return coach;
-//            }
-//        }
-//        return null;
-//    }
-
+	/**
+	 * Returns all coaches.
+	 *
+	 * @return list of Coach objects
+	 */
 	public List<Coach> getAllCoaches() {
-		return coaches;    
+		return coaches;
 	}
 
-	public void printAllCoaches() {
-		System.out.println("Lista wszystkich trenerów:");
-
-		for (Coach coach : coaches) {
-			System.out.println("────────────────────────────");
-			System.out.println("Username: " + coach.getUsername());
-			System.out.println("Imię: " + coach.getFirstName());
-			System.out.println("Nazwisko: " + coach.getSecondName());
-			System.out.println("Drużyny: " + coach.getTeams());
-		}
-
-		System.out.println("────────────────────────────");
-	}
 }

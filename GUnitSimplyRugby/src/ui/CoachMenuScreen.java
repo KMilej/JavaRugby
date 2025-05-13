@@ -1,10 +1,16 @@
+/*
+ * H48W35 Graded Unit 2 – Fife College
+ * Author: Kamil Milej | Date: 13.05.2025
+ * File: CoachMenuScreen.java
+ * Description:
+ * JPanel that displays the main coach menu with navigation buttons.
+ * Provides access to teams, coaches, settings, and personal team view.
+ */
+
 package ui;
 
 import javax.swing.*;
-
-
-import java.awt.Font;
-import java.awt.event.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import models.Coach;
@@ -12,109 +18,144 @@ import models.Team;
 import managers.CoachManager;
 import managers.TeamManager;
 
+/**
+ * UI panel for the coach menu screen, containing main navigation options.
+ */
 public class CoachMenuScreen extends JPanel {
 
-	private static final long serialVersionUID = 1L;
-	private CoachManager coachManager;
-	private TeamManager teamManager;
-	private JButton btnMyTeams;
-	private Coach loggedCoach;
+    private static final long serialVersionUID = 1L;
 
-	public CoachMenuScreen(CoachManager coachManager, TeamManager teamManager, Coach loggedCoach) {
-		this.coachManager = coachManager;
-		this.teamManager = teamManager;
-		this.loggedCoach = loggedCoach;
+    private CoachManager coachManager;
+    private TeamManager teamManager;
+    private JButton btnMyTeams;
 
-		setLayout(null);
-		setSize(1000, 750);
+    /**
+     * Constructs the CoachMenuScreen UI.
+     *
+     * @param coachManager the coach manager instance
+     * @param teamManager  the team manager instance
+     * @param loggedCoach  the currently logged-in coach
+     */
+    public CoachMenuScreen(CoachManager coachManager, TeamManager teamManager, Coach loggedCoach) {
+        this.coachManager = coachManager;
+        this.teamManager = teamManager;
+        setLayout(new BorderLayout());
+        setBackground(Color.WHITE);
 
-		JButton btnTeamsInClub = new JButton("Teams in Club");
-		btnTeamsInClub.setBounds(270, 115, 150, 45);
-		add(btnTeamsInClub);
+        JLabel title = new JLabel("Welcome, Coach " + loggedCoach.getFirstName(), SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 28));
+        title.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
+        add(title, BorderLayout.NORTH);
 
-		btnTeamsInClub.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				showAllTeams();
-			}
-		});
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 2, 20, 20));
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(30, 150, 30, 150));
+        buttonPanel.setBackground(Color.WHITE);
 
-		btnMyTeams = new JButton("My Teams");
-		btnMyTeams.setBounds(270, 214, 150, 45);
-		add(btnMyTeams);
+        JButton btnTeamsInClub = createStyledButton("Teams in Club", "img/Teams.png");
+        JButton btnActiveCoaches = createStyledButton("Active Coaches", "img/ActiveCoaches.png");
+        btnMyTeams = createStyledButton("My Teams", "img/srLogo.jpg");
+        JButton btnSettings = createStyledButton("Settings", "img/Settings.png");
 
-		btnMyTeams.addActionListener(e -> {
-			JFrame currentWindow = (JFrame) SwingUtilities.getWindowAncestor(this); // znajdź bieżące okno
-			currentWindow.dispose(); // zamknij je
-			new MyTeam(loggedCoach); // otwórz nowe
-		});
+        buttonPanel.add(btnTeamsInClub);
+        buttonPanel.add(btnActiveCoaches);
+        buttonPanel.add(btnMyTeams);
+        buttonPanel.add(btnSettings);
 
-		JButton btnSettings = new JButton("Settings");
-		btnSettings.setBounds(487, 214, 150, 45);
-		add(btnSettings);
+        add(buttonPanel, BorderLayout.CENTER);
 
-		JButton btnActiveCoaches = new JButton("Active Coaches");
-		btnActiveCoaches.setBounds(487, 115, 150, 45);
-		add(btnActiveCoaches);
+        JPanel footerPanel = new JPanel(new BorderLayout());
+        footerPanel.setBackground(Color.WHITE);
+        footerPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
 
-		JButton btnExit = new JButton("Exit");
-		btnExit.setBounds(375, 321, 150, 45);
-		add(btnExit);
+        JButton btnExit = new JButton("Exit");
+        btnExit.setBackground(Color.RED.darker());
+        btnExit.setForeground(Color.WHITE);
+        btnExit.setFont(new Font("Arial", Font.BOLD, 16));
+        btnExit.setFocusPainted(false);
+        btnExit.setPreferredSize(new Dimension(150, 40));
+        btnExit.setAlignmentX(CENTER_ALIGNMENT);
 
-		btnActiveCoaches.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				showCoachList();
-			}
-		});
+        footerPanel.add(btnExit, BorderLayout.CENTER);
+        add(footerPanel, BorderLayout.SOUTH);
 
-		JLabel title = new JLabel("Welcome in SR Menu: " + loggedCoach.getFirstName());
-		title.setFont(new Font("Arial", Font.BOLD, 20));
-		title.setBounds(308, 29, 600, 40); 
-		add(title);
+        // Button Actions
+        btnTeamsInClub.addActionListener(e -> showAllTeams());
+        btnActiveCoaches.addActionListener(e -> showCoachList());
+        btnMyTeams.addActionListener(e -> {
+            JFrame currentWindow = (JFrame) SwingUtilities.getWindowAncestor(this);
+            currentWindow.dispose();
+            new MyTeam(loggedCoach);
+        });
+        btnExit.addActionListener(e -> System.exit(0));
+    }
 
-		btnExit.addActionListener(e -> System.exit(0));
-	}
+    private JButton createStyledButton(String text, String imagePath) {
+        JButton button = new JButton(text);
+        button.setFont(new Font("Arial", Font.BOLD, 14));
 
-	private void showCoachList() {
-		List<Coach> coaches = coachManager.getAllCoaches();
+        try {
+            java.net.URL imageURL = getClass().getResource("/" + imagePath);
+            if (imageURL != null) {
+                ImageIcon originalIcon = new ImageIcon(imageURL);
+                Image scaledImage = originalIcon.getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH);
+                ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
-		DefaultListModel<String> model = new DefaultListModel<>();
-		for (Coach c : coaches) {
-			List<Team> teams = c.getTeams();
-			List<String> teamNames = new ArrayList<>();
+                button.setIcon(scaledIcon);
+                button.setHorizontalTextPosition(SwingConstants.CENTER);
+                button.setVerticalTextPosition(SwingConstants.BOTTOM);
+            } else {
+                System.out.println("Image not found: " + imagePath);
+            }
+        } catch (Exception e) {
+            System.out.println("Error loading image: " + imagePath);
+        }
 
-			for (Team t : teams) {
-				teamNames.add(t.toString()); // lub t.getName() jeśli masz metodę getName()
-			}
+        return button;
+    }
 
-			String info = c.getFirstName() + " " + c.getSecondName() + " (Username: " + c.getUsername() + ")"
-					+ " - Teams: " + String.join(", ", teamNames);
-			model.addElement(info);
-		}
+    private void showCoachList() {
+        List<Coach> coaches = coachManager.getAllCoaches();
+        DefaultListModel<String> model = new DefaultListModel<>();
 
-		JList<String> list = new JList<>(model);
-		JScrollPane scrollPane = new JScrollPane(list);
-		scrollPane.setPreferredSize(new java.awt.Dimension(400, 250));
+        for (Coach c : coaches) {
+            List<String> teamNames = new ArrayList<>();
+            for (Team t : c.getTeams()) {
+                teamNames.add(t.toString());
+            }
 
-		JOptionPane.showMessageDialog(this, scrollPane, "Active Coaches", JOptionPane.PLAIN_MESSAGE);
-	}
+            String info = c.getFirstName() + " " + c.getSecondName() +
+                    " (Username: " + c.getUsername() + ") - Teams: " + String.join(", ", teamNames);
+            model.addElement(info);
+        }
 
-	private void showAllTeams() {
-		List<models.Team> teams = teamManager.getAllTeams();
+        JList<String> list = new JList<>(model);
+        JScrollPane scrollPane = new JScrollPane(list);
+        scrollPane.setPreferredSize(new Dimension(400, 250));
 
-		DefaultListModel<String> model = new DefaultListModel<>();
-		for (models.Team t : teams) {
-			model.addElement(t.toString()); // np. "Simply Rugby (ID: 1)"
-		}
+        JOptionPane.showMessageDialog(this, scrollPane, "Active Coaches", JOptionPane.PLAIN_MESSAGE);
+    }
 
-		JList<String> list = new JList<>(model);
-		JScrollPane scrollPane = new JScrollPane(list);
-		scrollPane.setPreferredSize(new java.awt.Dimension(400, 250));
+    private void showAllTeams() {
+        List<Team> teams = teamManager.getAllTeams();
+        DefaultListModel<String> model = new DefaultListModel<>();
 
-		JOptionPane.showMessageDialog(this, scrollPane, "All Teams in Club", JOptionPane.PLAIN_MESSAGE);
-	}
+        for (Team t : teams) {
+            model.addElement(t.toString());
+        }
 
-	public JButton getMyTeamsButton() {
-		return btnMyTeams;
-	}
+        JList<String> list = new JList<>(model);
+        JScrollPane scrollPane = new JScrollPane(list);
+        scrollPane.setPreferredSize(new Dimension(400, 250));
 
+        JOptionPane.showMessageDialog(this, scrollPane, "All Teams in Club", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    /**
+     * Returns the "My Teams" button (can be used for testing or GUI automation).
+     *
+     * @return the "My Teams" button
+     */
+    public JButton getMyTeamsButton() {
+        return btnMyTeams;
+    }
 }

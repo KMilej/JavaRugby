@@ -1,3 +1,12 @@
+/*
+ * H48W35 Graded Unit 2 – Fife College
+ * Author: Kamil Milej | Date: 13.05.2025
+ * File: LoginPanel.java
+ * Description:
+ * JPanel that provides a login screen for coach users.
+ * Handles input, validation, and authentication using LoginValidation.
+ */
+
 package ui;
 
 import java.awt.*;
@@ -6,37 +15,30 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-
 import managers.CoachManager;
 import models.Coach;
 import services.LoginValidation;
 
+/**
+ * Login screen for coach authentication.
+ */
 public class LoginPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextField txtUsername;
-	private JPasswordField txtPassword;
 	private JButton btnLogin;
 
-	/* CONSTRUCTOR */
-
+	/**
+	 * Constructs the login panel with input fields and validation logic.
+	 */
 	public LoginPanel() {
-		setLayout(null); // ← pozwala przeciągać elementy w Design
-		setSize(1000, 750); // Ustawia rozmiar okna
+		setLayout(null);
+		setSize(1000, 750);
 
 		ImageIcon icon;
-
 		if (java.beans.Beans.isDesignTime()) {
-			// Działa w Eclipse Design view
 			icon = new ImageIcon("src/img/Rugby SImply LOGO.jpg");
 		} else {
-			// Działa po uruchomieniu aplikacji
 			icon = new ImageIcon(getClass().getResource("/img/Rugby SImply LOGO.jpg"));
 		}
 
@@ -75,48 +77,39 @@ public class LoginPanel extends JPanel {
 				String username = txtUsername.getText();
 				String password = new String(txtPassword.getPassword());
 
-				// validate if empty
 				if (username.isEmpty() || password.isEmpty()) {
-					JOptionPane.showMessageDialog(LoginPanel.this, "Provide a login and password");
+					JOptionPane.showMessageDialog(LoginPanel.this, "Please enter both username and password.");
 					return;
 				}
 
 				CoachManager coachManager = new CoachManager();
-				LoginValidation coachValidate = new LoginValidation(coachManager);
-
-				Coach coach = coachValidate.authenticate(username, password);
-
-//				// test
-//				CoachManager coachManager = new CoachManager(); 
-//				Coach coach = coachManager.authenticate(username, password);
+				LoginValidation validator = new LoginValidation(coachManager);
+				Coach coach = validator.authenticate(username, password);
 
 				if (coach != null) {
 					JOptionPane.showMessageDialog(LoginPanel.this, "Welcome, " + coach.getFirstName() + "!");
-
 					SwingUtilities.getWindowAncestor(LoginPanel.this).dispose();
-
 					new CoachMenu(coach);
-
 				} else {
-					JOptionPane.showMessageDialog(LoginPanel.this, "Wrong login or hasło.");
+					JOptionPane.showMessageDialog(LoginPanel.this, "Incorrect username or password.");
 				}
 			}
 		});
 
 		JLabel titleLabel = new JLabel("Welcome to SimplyRugby");
-
-		// how main big name will look like
-		titleLabel.setFont(new Font("Arial", Font.BOLD, 36)); // Nazwa czcionki, styl, rozmiar
-		titleLabel.setForeground(Color.BLUE); // Kolor tekstu (opcjonalnie)
-		titleLabel.setHorizontalAlignment(SwingConstants.CENTER); // Wyśrodkowanie (w poziomie)
-		titleLabel.setBounds(169, 43, 600, 50); // Pozycja i rozmiar
-
-		add(titleLabel); // Dodanie etykiety do panelu lub okna
-
+		titleLabel.setFont(new Font("Arial", Font.BOLD, 36));
+		titleLabel.setForeground(Color.BLUE);
+		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		titleLabel.setBounds(169, 43, 600, 50);
+		add(titleLabel);
 	}
 
+	/**
+	 * Returns the login button (useful for testing or automation).
+	 *
+	 * @return login button
+	 */
 	public JButton getLoginButton() {
 		return btnLogin;
 	}
-
 }

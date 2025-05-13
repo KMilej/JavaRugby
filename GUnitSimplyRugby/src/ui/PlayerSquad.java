@@ -1,23 +1,30 @@
+/*
+ * H48W35 Graded Unit 2 – Fife College
+ * Author: Kamil Milej | Date: 13.05.2025
+ * File: PlayerSquad.java
+ * Description:
+ * JFrame that displays the player squad view for the logged-in coach.
+ */
+
 package ui;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import managers.CoachManager;
-import managers.TeamManager;
 import models.Coach;
 
+/**
+ * Main window for displaying the squad of players assigned to a coach.
+ */
 public class PlayerSquad extends JFrame {
 
-	private static final long serialVersionUID = 1L;
-//	private JPanel contentPane;
+    private static final long serialVersionUID = 1L;
 
-
-	public PlayerSquad(Coach loggedCoach) {
-		super("Player Squad");
+    /**
+     * Constructs the PlayerSquad window for the given coach.
+     *
+     * @param loggedCoach the currently logged-in Coach
+     */
+    public PlayerSquad(Coach loggedCoach) {
+        super("Player Squad");
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 750);
@@ -26,8 +33,5 @@ public class PlayerSquad extends JFrame {
         PlayerSquadScreen playerSquad = new PlayerSquadScreen(loggedCoach, loggedCoach);
         setContentPane(playerSquad);
         setVisible(true);
-        
-        
-	}
-
+    }
 }
