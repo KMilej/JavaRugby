@@ -1,0 +1,1 @@
+Standard=5,Spin=4,Pop=3,Front=2,Rear=1,Side=1,Scrabble=1,Drop=2,Punt=4,Grubber=3,Goal=1
