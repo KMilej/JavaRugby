@@ -1,0 +1,46 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" version="27.0.5">
+  <diagram name="Page-1" id="k8p3lixSDFwENwxAxQMV">
+    <mxGraphModel dx="1426" dy="743" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="8hOC5DV4YNdvOxFbIcoZ-1" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="120" y="120" width="480" height="360" as="geometry" />
+        </mxCell>
+        <mxCell id="8hOC5DV4YNdvOxFbIcoZ-2" value="Back to Menu" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="140" y="140" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="8hOC5DV4YNdvOxFbIcoZ-3" value="Welcome logged in Coach" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="290" y="145" width="170" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="8hOC5DV4YNdvOxFbIcoZ-4" value="Team chosen by coach : name and ID" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="140" y="200" width="220" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="8hOC5DV4YNdvOxFbIcoZ-5" value="List of Player&lt;br&gt;assigned to this team" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="130" y="240" width="130" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="8hOC5DV4YNdvOxFbIcoZ-6" value="Table with all statistics" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="240" width="130" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="8hOC5DV4YNdvOxFbIcoZ-7" value="Save skills" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="240" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="8hOC5DV4YNdvOxFbIcoZ-8" value="Exit" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="420" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="8hOC5DV4YNdvOxFbIcoZ-9" value="standard" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="240" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="8hOC5DV4YNdvOxFbIcoZ-10" value="2" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="370" y="240" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="8hOC5DV4YNdvOxFbIcoZ-11" value="Finn Russell - Position" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="130" y="240" width="130" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="8hOC5DV4YNdvOxFbIcoZ-12" value="Blair Kinghorn -Position" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="130" y="260" width="130" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
